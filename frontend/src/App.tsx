@@ -9,14 +9,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Landing />}></Route>
         <Route path="/room" element = {<Room/>}></Route>  
-
-          {/* <Route index element={<Home />} /> */}
-          {/* <Route path="blogs" element={<Blogs />} />
-          <Route path="contact" element={<Contact />} />
-          <Route path="*" element={<NoPage />} /> */}
-          
-       
-        
+        {/* <Route path="*" element={<NoPage />} /> */}
       </Routes>
     </BrowserRouter>
     

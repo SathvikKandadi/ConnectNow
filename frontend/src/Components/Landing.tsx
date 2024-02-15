@@ -10,8 +10,11 @@ export default function Landing() {
         <Header></Header>
         <div className="grid grid-cols-10">
           <div className="col-span-5 mx-12">
-            <div>Premium Video Calls</div>
-            <div>Some Random text</div>
+            <div className="mt-64">
+              <div className="text-4xl">Premium Video Calls</div>
+              <div className="text-4xl">Free for everyone!</div>
+            </div>
+            <div className="mt-4 text-gray-500">Some Random text</div>
             <div className="mt-8 flex">
               <button className="bg-blue-500 text-white p-2 rounded mr-4">New Meeting</button>
               <div className="mr-4">
