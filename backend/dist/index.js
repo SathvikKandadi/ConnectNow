@@ -29,6 +29,11 @@ io.on("connection", (socket) => {
             else {
                 room.users.push(user);
                 socket.join(roomId);
+                // if(room.users.length === 2)
+                // {
+                //   console.log(room.users.length);
+                //   console.log(room.users);
+                // }
                 io.to(roomId).emit('start');
             }
         }

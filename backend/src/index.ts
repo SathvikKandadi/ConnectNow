@@ -44,7 +44,8 @@ io.on("connection" ,(socket) => {
       {
         room.users.push(user);
         socket.join(roomId);
-        io.to(roomId).emit('start');
+        socket.to(room.users[0].socket.id).emit('start'); // User2 is initiating a connection with User1 
+        //io.to(roomId).emit('start');
       }
     }
     else

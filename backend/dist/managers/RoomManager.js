@@ -1,5 +1,4 @@
 "use strict";
-//import { User } from "./UserManager";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RoomManager = void 0;
 class RoomManager {
@@ -23,11 +22,17 @@ class RoomManager {
         return room === null || room === void 0 ? void 0 : room.users;
     }
     removeUser(socket) {
-        console.log(socket);
         this.rooms.forEach(room => {
-            const user = room.users.find((user) => user.socket === socket);
-            room.users.filter((user) => user.socket === socket);
-            console.log(`User ${user === null || user === void 0 ? void 0 : user.socket.id} has left the room`);
+            const index = room.users.findIndex((user) => user.socket === socket);
+            if (index !== -1) {
+                const removedUser = room.users.splice(index, 1)[0];
+                // If there are no users in that room, delete the room
+                if (room.users.length === 0) {
+                    this.rooms = this.rooms.filter(r => r !== room);
+                    console.log(`Room ${room.roomId} has been deleted as it has no users.`);
+                }
+                console.log(`User with socket id ${removedUser === null || removedUser === void 0 ? void 0 : removedUser.socket.id} has left the room`);
+            }
         });
     }
 }
