@@ -1,6 +1,10 @@
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
+import { RoomManager } from "./managers/RoomManager";
 
-
+interface User {
+  name:string;
+  socket:Socket;
+}
 
 const io = new Server({
     cors: {
@@ -8,18 +12,58 @@ const io = new Server({
     }
   });
   
-  io.listen(3000);
+io.listen(3000);
+
+const roomManager = new RoomManager();
 
 io.on("connection" ,(socket) => {
 
-    console.log(`Socket connected` , socket.id);
+  //console.log(`Socket connected` , socket.id);
 
+ 
+ socket.on('room-joined' , (roomId , username) => {
+    console.log(`User with socket id ${socket.id} has joined room ${roomId}`);
+    const user : User = {
+      name:username,
+      socket
+    }
+
+    const room = roomManager.searchRoom(roomId);
+
+    if(room)
+    {
+      if(room.users.length === 2)
+      {
+        // socket.broadcast.emit('room-full');
+        console.log(`Room full with room Id ${room.roomId}`)
+        console.log(socket.id);
+        socket.emit('room-full');
+        return;
+      }
+      else
+      {
+        room.users.push(user);
+        socket.join(roomId);
+        io.to(roomId).emit('start');
+      }
+    }
+    else
+    {
+      roomManager.createRoom(roomId , user);
+      socket.join(roomId);
+    }
+
+    
+
+    socket.emit('handle-video');
+    
+  })
+  
     socket.on('offer', offer => {
-      // Handle offer from peer
       console.log("Offer received");
       console.log(offer);
       socket.broadcast.emit('offer' , offer);
-      // socket.broadcast.emit('offer', offer);
+     
   });
 
     socket.on("answer" , (answer) => {
@@ -31,6 +75,10 @@ io.on("connection" ,(socket) => {
     socket.on("add-ice-candidate" , (candidate) => {
       socket.broadcast.emit('add-ice-candidate' , candidate);
     })
+
+    socket.on("disconnect", () => {
+      roomManager.removeUser(socket);
+    });
 
   
 })

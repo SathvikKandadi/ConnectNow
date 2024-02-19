@@ -1,20 +1,47 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const socket_io_1 = require("socket.io");
+const RoomManager_1 = require("./managers/RoomManager");
 const io = new socket_io_1.Server({
     cors: {
         origin: "http://localhost:5173"
     }
 });
 io.listen(3000);
+const roomManager = new RoomManager_1.RoomManager();
 io.on("connection", (socket) => {
-    console.log(`Socket connected`, socket.id);
+    //console.log(`Socket connected` , socket.id);
+    socket.on('room-joined', (roomId, username) => {
+        console.log(`User with socket id ${socket.id} has joined room ${roomId}`);
+        const user = {
+            name: username,
+            socket
+        };
+        const room = roomManager.searchRoom(roomId);
+        if (room) {
+            if (room.users.length === 2) {
+                // socket.broadcast.emit('room-full');
+                console.log(`Room full with room Id ${room.roomId}`);
+                console.log(socket.id);
+                socket.emit('room-full');
+                return;
+            }
+            else {
+                room.users.push(user);
+                socket.join(roomId);
+                io.to(roomId).emit('start');
+            }
+        }
+        else {
+            roomManager.createRoom(roomId, user);
+            socket.join(roomId);
+        }
+        socket.emit('handle-video');
+    });
     socket.on('offer', offer => {
-        // Handle offer from peer
         console.log("Offer received");
         console.log(offer);
         socket.broadcast.emit('offer', offer);
-        // socket.broadcast.emit('offer', offer);
     });
     socket.on("answer", (answer) => {
         console.log("Answer received");
@@ -23,6 +50,9 @@ io.on("connection", (socket) => {
     });
     socket.on("add-ice-candidate", (candidate) => {
         socket.broadcast.emit('add-ice-candidate', candidate);
+    });
+    socket.on("disconnect", () => {
+        roomManager.removeUser(socket);
     });
 });
 // socket.on('answer', answer => {

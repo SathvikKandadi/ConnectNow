@@ -28,6 +28,7 @@ export default function Landing() {
       alert("Enter a username")
       return;
     }
+    
     navigate("/room/123");
     console.log(username);
   }
