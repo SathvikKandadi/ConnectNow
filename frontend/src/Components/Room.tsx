@@ -146,33 +146,24 @@ export default function Room() {
 
   return (
     <div className="bg-neutral-800 fixed top-0 right-0 bottom-0 left-0">
-      <div className="grid grid-cols-10 border border-white h-full shadow-xl">
-        {/* {myStream && <ReactPlayer url={URL.createObjectURL(myStream)} controls />} */}
-        <div className="col-span-5 flex justify-center items-center border border-white h-5/6 mt-8 ml-8">
-          <div className="text-3xl text-white ">
-            {/* <UserIcon></UserIcon> */}
-            Sathvik Kandadi
-          </div>
-
+      <div className="grid grid-cols-10  h-full shadow-xl ">
+        <div className="col-span-5 h-5/6 mt-8 mx-4">
+            {
+              myStream ? <ReactPlayer width="100%"
+              height="100%" url={myStream} controls/>: <div className="text-3xl text-white border border-white w-full h-full flex justify-center items-center"> User 1</div>
+            }
         </div>
-        {myStream && <div className="text-3xl text-white font-bold border-2 w-1 h-1 border-blue-400 col-span-5">
-          My Track
-          <ReactPlayer url={myStream} controls/>
-          {/* playing={true} */}
-        </div>}
-
-        {/* {
-          video ? <button className="bg-blue-600 p-2 rounded text-white col-span-1" onClick={handleVideo}>Video</button> :
-            <button className="bg-red-600 p-2 rounded text-white col-span-1" onClick={handleVideo}>Stop Video</button>
-        } */}
-
-
+        <div className="col-span-5 h-5/6 mt-8 mx-4">
+            {
+              remoteStream ? <ReactPlayer width="100%"
+              height="100%" url={remoteStream} controls/>: <div className="text-3xl text-white border border-white w-full h-full flex justify-center items-center"> User 2</div>
+            }
+        </div>
         {remoteStream && <div className="text-3xl font-bold border-2 m-4 border-black">
           Remote Track
           <ReactPlayer url={remoteStream} controls />
         </div>}
         <Footer video={video} conn={conn} handleVideo={handleVideo} handleClick={handleClick}></Footer>
-        {/* {remoteStream && <video src={URL.createObjectURL(remoteStream)} controls autoPlay />} */}
       </div>
     </div>
   );
