@@ -81,10 +81,6 @@ export default function Room() {
 
     socket.on('answer', async(answer,roomId) => {
       pc.setRemoteDescription(answer);
-      pc.ontrack = (event) => {
-        console.log("Remote track received");
-        setRemoteStream(event.streams[0]);
-      };
       console.log(`Connection is successfully established in room ${roomId}`);
     });
 
@@ -159,10 +155,6 @@ export default function Room() {
               height="100%" url={remoteStream} controls/>: <div className="text-3xl text-white border border-white w-full h-full flex justify-center items-center"> User 2</div>
             }
         </div>
-        {remoteStream && <div className="text-3xl font-bold border-2 m-4 border-black">
-          Remote Track
-          <ReactPlayer url={remoteStream} controls />
-        </div>}
         <Footer video={video} conn={conn} handleVideo={handleVideo} handleClick={handleClick}></Footer>
       </div>
     </div>
