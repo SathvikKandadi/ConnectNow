@@ -47,7 +47,7 @@ export default function Landing() {
             <div className="text-4xl">Premium Video Calls</div>
             <div className="text-4xl">Free for everyone!</div>
           </div>
-          <div className="mt-4 text-gray-500">Some Random text</div>
+          <div className="mt-4 text-gray-500  pr-12">ConnectNow is a video meeting app powered by WebRTC (Web Real-Time Communication). You can start your own room or join an existing one by entering the room ID below. Remember, each room can only host two users at a time.</div>
           <div className="mt-8 flex relative">
             <button className="bg-blue-500 text-white p-2 rounded mr-4 flex gap-2 z-1 relative" onClick={handleClick}>
               <VideoIcon></VideoIcon>
