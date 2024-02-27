@@ -31,10 +31,10 @@ export default function Room() {
     // const peerConnection = new RTCPeerConnection();
     // setPC(peerConnection);
 
-    pc.ontrack = (event) => {
-      console.log("Remote track received");
-      setRemoteStream(event.streams[0]);
-    };
+    // pc.ontrack = (event) => {
+    //   console.log("Remote track received" , ++count);
+    //   setRemoteStream(event.streams[0]);
+    // };
 
     socket.on('handle-video', async () => {
       console.log("Fetching User's Video");
@@ -59,10 +59,18 @@ export default function Room() {
         }
       };
 
-      // pc.ontrack = (event) => {
-      //   console.log("Remote track received");
-      //   setRemoteStream(event.streams[0]);
-      // };
+      pc.onnegotiationneeded = async () => {
+        console.log("on negotiation neeeded, sending offer");
+        const offer = await pc.createOffer();
+        pc.setLocalDescription(offer)
+        socket.emit("offer", offer, roomId);
+    }
+
+      
+      pc.ontrack = (event) => {
+        console.log("Remote track received");
+        setRemoteStream(event.streams[0]);
+      };
 
       pc.setRemoteDescription(offer);
       const answer = await pc.createAnswer();
@@ -73,10 +81,10 @@ export default function Room() {
 
     socket.on('answer', async(answer,roomId) => {
       pc.setRemoteDescription(answer);
-      // pc.ontrack = (event) => {
-      //   console.log("Remote track received");
-      //   setRemoteStream(event.streams[0]);
-      // };
+      pc.ontrack = (event) => {
+        console.log("Remote track received");
+        setRemoteStream(event.streams[0]);
+      };
       console.log(`Connection is successfully established in room ${roomId}`);
     });
 

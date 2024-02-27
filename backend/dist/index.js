@@ -27,7 +27,11 @@ io.on("connection", (socket) => {
             else {
                 room.users.push(user);
                 console.log(`User with socket id ${socket.id} is initiating call`);
-                socket.to(room.users[0].socket.id).emit('start', roomId); // User2 is initiating a connection with User1
+                const senderIndex = room.users.findIndex((user) => user.socket.id === socket.id);
+                const receiverIndex = senderIndex ? 0 : 1; // if senderIndex is 1 then receiver is 0 else vice versa 
+                const sendingUser = room.users[senderIndex].socket.id;
+                const receivingUser = room.users[receiverIndex].socket.id;
+                socket.to(receivingUser).emit('start', roomId); // User2 is initiating a connection with User1
             }
         }
         else {
@@ -42,10 +46,14 @@ io.on("connection", (socket) => {
             console.log(`No room with roomId ${roomId} exists`);
             return;
         }
-        const user = room === null || room === void 0 ? void 0 : room.users[1].socket.id; // Getting user2's socketId
-        if (user) {
-            console.log(`Sending the offer to User with socket id ${user}`);
-            socket.to(user).emit('offer', offer, roomId);
+        const senderIndex = room.users.findIndex((user) => user.socket.id === socket.id);
+        const receiverIndex = senderIndex ? 0 : 1; // if senderIndex is 1 then receiver is 0 else vice versa 
+        const sendingUser = room.users[senderIndex].socket.id;
+        const receivingUser = room.users[receiverIndex].socket.id;
+        //const user=room?.users[1].socket.id;
+        if (receivingUser) {
+            console.log(`Sending the offer to User with socket id ${receivingUser}`);
+            socket.to(receivingUser).emit('offer', offer, roomId);
         }
         else {
             console.log("There is only one User in the room");
@@ -58,10 +66,14 @@ io.on("connection", (socket) => {
             console.log(`No room with roomId ${roomId} exists`);
             return;
         }
-        const user = room === null || room === void 0 ? void 0 : room.users[0].socket.id; // Getting user1's socketId
-        if (user) {
-            console.log(`Sending the answer to User with socket id ${user}`);
-            socket.to(user).emit('answer', answer, roomId);
+        const senderIndex = room.users.findIndex((user) => user.socket.id === socket.id);
+        const receiverIndex = senderIndex ? 0 : 1; // if senderIndex is 1 then receiver is 0 else vice versa 
+        const sendingUser = room.users[senderIndex].socket.id;
+        const receivingUser = room.users[receiverIndex].socket.id;
+        //const user=room?.users[0].socket.id; // Getting user1's socketId
+        if (receivingUser) {
+            console.log(`Sending the answer to User with socket id ${receivingUser}`);
+            socket.to(receivingUser).emit('answer', answer, roomId);
         }
         else {
             console.log("There is only one User in the room");
