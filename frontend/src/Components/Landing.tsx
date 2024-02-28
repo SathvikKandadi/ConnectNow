@@ -3,6 +3,7 @@ import Header from "./Header";
 import Options from "./Options";
 import VideoIcon from "./VideoIcon";
 import { useNavigate } from "react-router-dom";
+import homepageImage from "../assets/homepage.png";
 
 export default function Landing() {
 
@@ -39,7 +40,7 @@ export default function Landing() {
   }
 
   return (
-    <div className="border-2 border-black fixed top-0 right-0 bottom-0 left-0">
+    <div className=" fixed top-0 right-0 bottom-0 left-0">
       <Header></Header>
       <div className="grid grid-cols-10">
         <div className="col-span-5 mx-12">
@@ -61,8 +62,8 @@ export default function Landing() {
           </div>
 
         </div>
-        <div className="col-span-5">
-          Image
+        <div className="col-span-5 ml-4 mr-8 mt-10  pt-16">
+          <img src={homepageImage} alt="Homepage" className=""></img>
         </div>
       </div>
     </div>
