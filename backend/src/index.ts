@@ -55,7 +55,7 @@ io.on("connection" ,(socket) => {
       roomManager.createRoom(roomId , user);
     }
  
-    socket.emit('handle-video');
+    socket.emit('handle-join');
   })
   
     socket.on('offer', (offer , roomId ) => {

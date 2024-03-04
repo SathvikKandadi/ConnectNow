@@ -37,7 +37,7 @@ io.on("connection", (socket) => {
         else {
             roomManager.createRoom(roomId, user);
         }
-        socket.emit('handle-video');
+        socket.emit('handle-join');
     });
     socket.on('offer', (offer, roomId) => {
         console.log(`Offer  is created by User with socket Id ${socket.id}`);

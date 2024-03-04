@@ -30,7 +30,8 @@ export default function Landing() {
       return;
     }
     
-    navigate("/room/123");
+    let roomId:string = generateMeetingId();
+    navigate(`/room/${roomId}`);
     console.log(username);
   }
 
@@ -38,6 +39,16 @@ export default function Landing() {
   {
     navigate(`/room/${meetingId}`);
   }
+
+  function generateMeetingId(): string {
+    const chars: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result: string = '';
+    for (let i = 0; i < 8; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+  }
+
 
   return (
     <div className=" fixed top-0 right-0 bottom-0 left-0">
