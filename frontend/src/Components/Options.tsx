@@ -1,6 +1,6 @@
-import DeleteIcon from "./DeleteIcon";
-import PlusIcon from "./PlusIcon";
-import UserIcon from "./UserIcon";
+import DeleteIcon from "../Icons/DeleteIcon";
+import PlusIcon from "../Icons/PlusIcon";
+import UserIcon from "../Icons/UserIcon";
 
 interface OptionsProps {
     handleClick: () => void;

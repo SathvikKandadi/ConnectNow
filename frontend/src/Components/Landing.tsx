@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Header from "./Header";
 import Options from "./Options";
-import VideoIcon from "./VideoIcon";
+import VideoIcon from "../Icons/VideoIcon";
 import { useNavigate } from "react-router-dom";
 import homepageImage from "../assets/homepage.png";
 
@@ -62,7 +62,7 @@ export default function Landing() {
           <div className="mt-4 text-gray-500  pr-12">ConnectNow is a video meeting app powered by WebRTC (Web Real-Time Communication). You can start your own room or join an existing one by entering the room ID below. Remember, each room can only host two users at a time.</div>
           <div className="mt-8 flex relative">
             <button className="bg-blue-500 text-white p-2 rounded mr-4 flex gap-2 z-1 relative" onClick={handleClick}>
-              <VideoIcon></VideoIcon>
+              <VideoIcon width={5} height={5}></VideoIcon>
               New Meeting
             </button>
             {visible && <Options  handleClick={handleClick} username={username} handleUsernameChange={handleUsernameChange} handleCreateNewMeeting={handleCreateNewMeeting}></Options>}
