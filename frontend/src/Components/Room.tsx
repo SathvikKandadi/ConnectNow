@@ -22,8 +22,9 @@ export default function Room() {
   const { roomId } = useParams();
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
+  
 
-  const socket = useMemo(() => io("http://localhost:3000/"), []);
+  const socket = useMemo(() => io("https://connectnow-rp6h.onrender.com"), []); // use http:localhost:3000 while working locally
 
 
   useEffect(() => {
