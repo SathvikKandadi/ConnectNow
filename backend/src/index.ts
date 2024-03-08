@@ -54,8 +54,8 @@ io.on("connection" ,(socket) => {
     {
       roomManager.createRoom(roomId , user);
     }
- 
     socket.emit('handle-join');
+    
   })
   
     socket.on('offer', (offer , roomId ) => {
@@ -122,6 +122,7 @@ io.on("connection" ,(socket) => {
       socket.to(receivingUser).emit('add-ice-candidate' , candidate , roomId);
     })
 
+    
     socket.on("disconnect", () => {
       roomManager.removeUser(socket);
     });

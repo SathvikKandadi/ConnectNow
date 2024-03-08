@@ -7,10 +7,11 @@ import { useNavigate, useParams } from "react-router-dom";
 
 
 
+
 export default function Room() {
 
   // const [pc, setPC] = useState<RTCPeerConnection | null>(null);
-
+ 
   const pc = new RTCPeerConnection();
   const [video, setVideo] = useState<boolean>(true);
   const [audio, setAudio] = useState<boolean>(true);
@@ -31,7 +32,7 @@ export default function Room() {
 
     socket.on("connect", () => {
       console.log("Connected to server");
-      socket.emit("room-joined", roomId, "Sathvik");
+      socket.emit("room-joined", roomId, "User");
     })
 
     // const peerConnection = new RTCPeerConnection();
@@ -93,11 +94,12 @@ export default function Room() {
       navigate('/');
     })
 
+   
     return () => {
       socket.off('handle-join');
       socket.off('offer');
       socket.off('answer');
-      socket.off('add-ice-candidate', handleIceCandidate);
+      socket.off('add-ice-candidate');
       socket.close();
     };
 
@@ -146,35 +148,15 @@ export default function Room() {
     setAudio(!audio);
   }
 
+  function handleEnd() {
+    if (myStream) {
+      myStream.getTracks().forEach(track => track.stop());
+    }
+    setMyStream(null);
+    navigate("/");
+    
+  }
 
-  // async function handleAudio() {
-  //   if (myStream && audio) {
-  //     myStream.getAudioTracks().forEach(track => {
-  //       console.log("Track  before disabling:", track);
-  //       track.enabled = false; // Stop the audio track
-  //       const sender = pc.getSenders().find(sender => sender.track === track);
-  //       if (sender) {
-  //         pc.removeTrack(sender); // Remove audio track sender from peer connection
-  //       }
-
-  //       track.stop(); // Stop the audio track
-  //       console.log("Track after disabling:", track);
-  //     });
-  //     setMyStream(new MediaStream(myStream.getVideoTracks()));
-  //   }
-  //   else {
-  //     if (!myStream) {
-  //       console.log("No stream available");
-  //       return;
-  //     }
-  //     const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-  //     const newStream = new MediaStream([...myStream.getTracks(), ...audioStream.getTracks()]);
-  //     setMyStream(newStream);
-  //     audioStream.getTracks().forEach(track => pc.addTrack(track, newStream));
-
-  //   }
-  //   //setAudio(!audio);
-  // }
 
   async function handleIceCandidate(candidate: any) {
     console.log("New Ice candidates")
@@ -218,12 +200,12 @@ export default function Room() {
           {remoteStream ? (
             <video width="100%" height="100%" autoPlay ref={remoteVideoRef} className="mt-20"></video>
           ) : (
-            <div className="text-3xl text-white border border-white w-full h-full flex justify-center items-center">
-              User 2
+            <div className="text-3xl text-white  w-full h-full flex flex-col gap-2 justify-center items-center">
+              <div>Waiting for other user to join </div> <div className="flex justify-center">{`RoomId: ${roomId}`}</div>
             </div>
           )}
         </div>
-        <Footer video={video} audio={audio}  handleVideo={handleVideo} handleAudio={handleAudio}></Footer>
+        <Footer video={video} audio={audio}  handleVideo={handleVideo} handleAudio={handleAudio} handleEnd={handleEnd}></Footer>
       </div>
     </div>
   );
